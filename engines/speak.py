@@ -1,4 +1,3 @@
-import os
 from PySide2.QtTextToSpeech import QTextToSpeech
 
 
