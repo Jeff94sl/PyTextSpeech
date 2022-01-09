@@ -7,6 +7,6 @@ setup(
     url='https://github.com/Jeff94sl/PyTextSpeech',
     license='GPL3',
     author='Jefrin Salgado',
-    author_email='Jeffrynsl@gmail.com',
-    description='COnvierte a voz  pdf y texto plano '
+    author_email='jeffrynsl@gmail.com',
+    description='Lector de Texto a voz'
 )
