@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import (QMenuBar, QAction)
+from PySide2.QtWidgets import QMenuBar, QAction
 
 
 class Menu(QMenuBar):

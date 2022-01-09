@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import (QSlider,QHBoxLayout,QFormLayout, QLabel)
+from PySide2.QtWidgets import QSlider, QHBoxLayout, QFormLayout, QLabel
 from PySide2.QtCore import Qt
 
 class Slider(QSlider):

@@ -1,11 +1,9 @@
 import threading
 from PySide2.QtGui import QCursor
-from PySide2.QtWidgets import(QWidget,
-	QVBoxLayout,QTextEdit)
-from PySide2.QtCore import (Qt,QLocale)
-from gui import (Menu, SliderGrop, Boton,
-	ComboGrop)
-from engines import (QSpeak, Document)
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QTextEdit
+from PySide2.QtCore import Qt, QLocale
+from gui import Menu, SliderGrop, Boton, ComboGrop
+from engines import QSpeak, Document
 
 class Window(QWidget):
 	"""docstring for Window"""

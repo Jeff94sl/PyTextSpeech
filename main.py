@@ -1,6 +1,6 @@
 import sys
 from PySide2.QtWidgets import QApplication
-from PySide2.QtCore import (QTranslator,QLocale, QLibraryInfo)
+from PySide2.QtCore import QTranslator, QLocale, QLibraryInfo
 from gui import Window
 
 

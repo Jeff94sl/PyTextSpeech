@@ -1,5 +1,6 @@
-from PySide2.QtWidgets import (QHBoxLayout, QFormLayout,
-	QLabel,QComboBox)
+from PySide2.QtWidgets import QHBoxLayout, QFormLayout, QLabel, QComboBox
+
+
 class ComboGrop(QHBoxLayout):
 	"""docstring for ComboGrop"""
 	def __init__(self):
