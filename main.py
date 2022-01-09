@@ -7,6 +7,12 @@ from gui import Window
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
 
+	traductor = QTranslator()
+	traductor.load("qtbase_"+ QLocale.system().name(),
+                   QLibraryInfo.location(QLibraryInfo.TranslationsPath))
+	app.installTranslator(traductor)
+
+	print(QLocale.system().name())
 	win = Window()
 	win.parent = app;
 

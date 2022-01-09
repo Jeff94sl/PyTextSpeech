@@ -30,7 +30,5 @@ class QSpeak(QTextToSpeech):
         return self.volume()
 
     def readtext(self, text):
-        words = text.split(' ')
-        for word in words:
-            self.say(text)
-            os.system("sleep 1000")
+        self.say(text)
+        return True

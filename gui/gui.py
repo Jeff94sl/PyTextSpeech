@@ -1,107 +1,124 @@
-import threading
-from PySide2.QtGui import QCursor
-from PySide2.QtWidgets import QWidget, QVBoxLayout, QTextEdit
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QTextEdit, QMessageBox
 from PySide2.QtCore import Qt, QLocale
 from gui import Menu, SliderGrop, Boton, ComboGrop
 from engines import QSpeak, Document
 
+
 class Window(QWidget):
-	"""docstring for Window"""
-	def __init__(self):
-		super(Window, self).__init__()
-		self.setWindowTitle("PyTextSpeech")
-		self.resize(400,400)
-		self.parent = ""
-		
-		self.volume = 0
-		self.rate = 0
-		self.engine = QSpeak()
-		self.doc = Document()
-		self.mn = Menu()
-		self.text_to_read = QTextEdit()
-		self.vlayout = QVBoxLayout()
-		self.sliders = SliderGrop()
+    """docstring for Window"""
 
-		self.cmbgrop = ComboGrop()
+    def __init__(self):
+        super(Window, self).__init__()
+        self.setWindowTitle("PyTextSpeech")
+        self.resize(400, 400)
+        self.parent = ""
 
-		self.lbtn = Boton()
-		self.doc.parent = self
-		self.lbtn.btnSpeak.clicked.connect(self.Speak)
-		self.lbtn.btnPause.clicked.connect(self.Pause)
-		self.lbtn.btnResume.clicked.connect(self.Resume)
-		self.lbtn.btnStop.clicked.connect(self.Stop)
+        self.volume = 0
+        self.rate = 0
+        self.engine = QSpeak()
+        self.doc = Document()
+        self.mn = Menu()
+        self.text_to_read = QTextEdit()
+        self.vlayout = QVBoxLayout()
+        self.sliders = SliderGrop()
 
-		self.sliders.slider_volume.valueChanged.connect(self.SliderVolume)
-		self.sliders.slider_rate.valueChanged.connect(self.SliderRate)
+        self.cmbgrop = ComboGrop()
 
-		self.cmbgrop.cmbVoice.currentTextChanged.connect(self.Voice)
-		self.cmbgrop.cmbLanguage.currentTextChanged.connect(self.Locale)
+        self.lbtn = Boton()
+        self.doc.parent = self
+        self.lbtn.btnSpeak.clicked.connect(self.Speak)
+        self.lbtn.btnPause.clicked.connect(self.Pause)
+        self.lbtn.btnResume.clicked.connect(self.Resume)
+        self.lbtn.btnStop.clicked.connect(self.Stop)
 
-		self.mn.Pdf.triggered.connect(self.Abrir_Pdf)
-		self.mn.Texto.triggered.connect(self.Abrir_Text)
+        self.sliders.slider_volume.valueChanged.connect(self.SliderVolume)
+        self.sliders.slider_rate.valueChanged.connect(self.SliderRate)
 
+        self.cmbgrop.cmbVoice.currentTextChanged.connect(self.Voice)
+        self.cmbgrop.cmbLanguage.currentTextChanged.connect(self.Locale)
 
-		self.LoadLanguage()
-		self.LoadVoices()
+        self.mn.Pdf.triggered.connect(self.Abrir_Pdf)
+        self.mn.Texto.triggered.connect(self.Abrir_Text)
 
-		self.cmbgrop.cmbVoice.setCurrentIndex(9)
-		self.cmbgrop.cmbLanguage.setCurrentIndex(18)
+        self.LoadLanguage()
+        self.LoadVoices()
 
-		self.vlayout.addWidget(self.mn)
-		self.vlayout.addWidget(self.text_to_read)
-		
-		self.vlayout.addLayout(self.sliders)
-		self.vlayout.addLayout(self.cmbgrop)
-		self.vlayout.addLayout(self.lbtn)
+        self.cmbgrop.cmbVoice.setCurrentIndex(9)
+        self.cmbgrop.cmbLanguage.setCurrentIndex(18)
 
-		self.setLayout(self.vlayout)
+        self.vlayout.addWidget(self.mn)
+        self.vlayout.addWidget(self.text_to_read)
 
-	def Abrir_Pdf(self):
-		text = self.doc.AbrirPDF()
-		self.text_to_read.setText(text)
+        self.vlayout.addLayout(self.sliders)
+        self.vlayout.addLayout(self.cmbgrop)
+        self.vlayout.addLayout(self.lbtn)
 
-	def Abrir_Text(self):
-		self.text_to_read.setText(self.doc.AbrirText())
+        self.setLayout(self.vlayout)
 
-	def LoadVoices(self):
-		voices = self.engine.getVoices()
-		
-		for i in voices:
-			self.cmbgrop.cmbVoice.addItem(i.name())
+    def Abrir_Pdf(self):
+        text = self.doc.AbrirPDF()
+        self.text_to_read.setText(text)
 
-	def LoadLanguage(self):
-		voices = self.engine.getLocale()
-		
-		for i in voices:
-			self.cmbgrop.cmbLanguage.addItem(QLocale.countryToString(i.country()))
+    def Abrir_Text(self):
+        self.text_to_read.setText(self.doc.AbrirText())
 
-	def Voice(self):
-		voices = self.engine.getVoices()
+    def LoadVoices(self):
+        voices = self.engine.getVoices()
 
-		self.engine.Voice(voices[self.cmbgrop.cmbVoice.currentIndex()])
+        for i in voices:
+            self.cmbgrop.cmbVoice.addItem(i.name())
 
-	def Locale(self):
-		self.engine.Locale(self.cmbgrop.cmbLanguage.currentText())
+    def LoadLanguage(self):
+        locales = self.engine.getLocale()
 
-	def SliderVolume(self):
-		self.engine.setVolume(float(self.sliders.slider_volume.value()/100))
+        for i in locales:
+            self.cmbgrop.cmbLanguage.addItem(QLocale.countryToString(i.country()))
 
-	def SliderRate(self):
-		self.engine.setRate(self.sliders.slider_rate.value()/100)
+    def Voice(self):
+        try:
+            voices = self.engine.getVoices()
 
-	def SliderPitch(self):
-		self.engine.setPitch(self.sliders.slider_pitch.value()/100)
+            self.engine.Voice(voices[self.cmbgrop.cmbVoice.currentIndex()])
 
-	def Speak(self):
-		self.parent.setOverrideCursor(Qt.WaitCursor)
-		self.engine.say(self.text_to_read.toPlainText())
-		self.parent.restoreOverrideCursor()
+        except:
+            msg = QMessageBox()
+            msg.setWindowTitle('Error')
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setText('Voz no disponible')
+            msg.exec_()
 
-	def Pause(self):
-		self.engine.pause()
+    def Locale(self):
+        try:
+            locales = self.engine.getLocale()
+            self.engine.Locale(locales[self.cmbgrop.cmbLanguage.currentIndex()])
+        except:
+            msg = QMessageBox()
+            msg.setWindowTitle(self.tr('Error'))
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setText('Lenguaje no disponible')
+            msg.exec_()
 
-	def Resume(self):
-		self.engine.resume()
+    def SliderVolume(self):
+        self.engine.setVolume(float(self.sliders.slider_volume.value() / 100))
 
-	def Stop(self):
-		self.engine.stop()
+    def SliderRate(self):
+        self.engine.setRate(self.sliders.slider_rate.value() / 100)
+
+    def SliderPitch(self):
+        self.engine.setPitch(self.sliders.slider_pitch.value() / 100)
+
+    def Speak(self):
+        self.parent.setOverrideCursor(Qt.WaitCursor)
+        self.engine.say(self.text_to_read.toPlainText())
+        self.parent.restoreOverrideCursor()
+
+    def Pause(self):
+        self.engine.pause()
+
+    def Resume(self):
+        self.engine.resume()
+
+    def Stop(self):
+        self.engine.stop()
