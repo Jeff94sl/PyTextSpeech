@@ -11,7 +11,6 @@ class Window(QWidget):
         super(Window, self).__init__()
         self.setWindowTitle("PyTextSpeech")
         self.resize(400, 400)
-        self.parent = ""
 
         self.volume = 0
         self.rate = 0
@@ -43,9 +42,6 @@ class Window(QWidget):
         self.LoadLanguage()
         self.LoadVoices()
 
-        self.cmbgrop.cmbVoice.setCurrentIndex(9)
-        self.cmbgrop.cmbLanguage.setCurrentIndex(18)
-
         self.vlayout.addWidget(self.mn)
         self.vlayout.addWidget(self.text_to_read)
 
@@ -73,6 +69,7 @@ class Window(QWidget):
 
         for i in locales:
             self.cmbgrop.cmbLanguage.addItem(QLocale.countryToString(i.country()))
+
 
     def Voice(self):
         try:

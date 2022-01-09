@@ -11,7 +11,6 @@ if __name__ == '__main__':
                    QLibraryInfo.location(QLibraryInfo.TranslationsPath))
     app.installTranslator(traductor)
 
-    print(QLocale.system().name())
     win = Window()
     win.parent = app
 

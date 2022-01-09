@@ -1,3 +1,4 @@
+from PySide2.QtCore import QLocale
 from PySide2.QtTextToSpeech import QTextToSpeech
 
 
@@ -6,6 +7,7 @@ class QSpeak(QTextToSpeech):
 
     def __init__(self):
         super(QSpeak, self).__init__()
+        self.setLocale(QLocale.system())
         self.setRate(0.0)
         self.setVolume(0.0)
         self.setPitch(0.0)
@@ -27,7 +29,3 @@ class QSpeak(QTextToSpeech):
 
     def getVolume(self):
         return self.volume()
-
-    def readtext(self, text):
-        self.say(text)
-        return True
